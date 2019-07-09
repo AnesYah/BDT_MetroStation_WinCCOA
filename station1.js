@@ -4,6 +4,7 @@ var activeCamera;
 var boxMaterial=[]; // here to store colors 
 var dp=[]; // my data points array
 var alarm=[];// my emergency stop array
+var hs = [];
 //var Toggle = [true, true, true, true, true];
 var interval, interval2; // this is using in blinks to call the setting interval in stopBlink()
 var direction=0; // stair direction 
@@ -151,19 +152,21 @@ function stair(numSteps,stepWidth,stepHeight,stepDepth)
         this.stepWidth=stepWidth;
         this.stepHeight=stepHeight;
         this.stepDepth=stepDepth;
-        var step=BABYLON.MeshBuilder.CreateBox('', {width:this.stepWidth, height:this.stepHeight, depth:this.stepDepth}, scene);
-        step.material=stairMaterial;
+        //this.oldMaterial= null;
+        this.step=BABYLON.MeshBuilder.CreateBox('', {width:this.stepWidth, height:this.stepHeight, depth:this.stepDepth}, scene);
+
+        this.step.material=stairMaterial;
         var stepss=[];
 
         for(var i = 0; i < numSteps; i++)
             {
-                var inst = step.createInstance('step'+i);
+                var inst = this.step.createInstance('step'+i);
                 //inst.parent = stairs;
                // stairs.rotation.y = stepYrotation;
                 stepss.push(inst);
             }
         //hide step
-        step.isVisible=false;
+        this.step.isVisible=false;
 
         
         
@@ -181,7 +184,10 @@ function stair(numSteps,stepWidth,stepHeight,stepDepth)
         this.maxAng=maxAng;
     } // EM
 
-
+stair.prototype.setStepMaterial=function(newMaterial)
+    {       
+        this.step.material=newMaterial;
+    }
 stair.prototype.DynStair=function(dir,escalierPosition,stepYrotation) 
     {   
             ang += angSpeed;
@@ -659,6 +665,44 @@ oaJsApi.dpConnect("BD1_1B1_EM4.status.ARRET_URGENCE",true,
 	})
 
 
+oaJsApi.dpConnect("BD1_1B1_EM1.status.HS",true,
+    {
+        success: function(data)
+            {
+                hs[0]=data.value;
+                var manager = new BABYLON.GUI.GUI3DManager(scene);
+                var button = new BABYLON.GUI.HolographicButton("Open");
+                manager.addControl(button);
+                button.linkToTransformNode(anchor);
+                button.text = "Escalier hors service";
+                button.imageUrl = "/babylonTest/textures/_maintenance.jpg";
+                button.onPointerUpObservable.add(function(){
+                            });
+                anchor.position = new BABYLON.Vector3(eM1.position.x+0.7,eM1.position.y-0.2,eM1.position.z);//escalierMecanique.position.clone();
+                anchor.rotation.y=3*Math.PI/2;
+                anchor.scaling= new BABYLON.Vector3(.1,.1,.1);
+                anchor.isVisible=false;
+                if(hs[0]=='false')
+                    {
+                        button.isVisible=false;
+                        smallStep[0].setStepMaterial(stairMaterial);
+                        
+                          
+                    }
+                else if (alarm[3]='true')
+                    {
+                        buffer[6]=false;
+                        buffer[7]=false;
+                        button.isVisible=true;
+                        smallStep[0].setStepMaterial(yellowStairMaterial);
+                    }
+
+                    
+
+            }
+
+    })
+
 
 
 
@@ -807,10 +851,11 @@ var CreateScene=function()
         	{
                     scene.clearColor = new BABYLON.Color3(.1, 1, 1);// modifier la couleur de background 
                     stairMaterial=scene.getMaterialByID("station2.Metal_Steel_Textured_White");
+                    //stairMaterial.diffuseColor=new BABYLON.Color3.Red();
                    
 
-                    escalierMecanique = scene.getMeshByID("EscalierMecanique1");
-                    var escalierMecaniquePosition= escalierMecanique.position;
+                   // escalierMecanique = scene.getMeshByID("EscalierMecanique1"); // je vois pas l'utilité
+                   // var escalierMecaniquePosition= escalierMecanique.position; // encore ici
                     niv[0]=scene.getMeshByID("SketchUp.009");
                     niv0=niv[0].getChildMeshes();
                    
@@ -909,6 +954,23 @@ var CreateScene=function()
                   	smallStep[1].DynStair(1,eM2.position,eM2.rotation.y);  	       //EM niveau2  --droite
                   	bigStep[0].DynStair(-1,eM3.position,eM3.rotation.y);				  //EM niveau3   --gauche
                     bigStep[1].DynStair(-1,eM4.position,eM4.rotation.y); 
+
+                    var redStairMaterial = stairMaterial.clone("redMaterial");
+
+                    redStairMaterial.diffuseColor=new BABYLON.Color3.Red();
+                    
+                    var greenStairMaterial=stairMaterial.clone("greenMaterial");
+                    greenStairMaterial.diffuseColor=new BABYLON.Color3.Green();
+
+                    var yellowStairMaterial=stairMaterial.clone("yellowMaterial");
+                    yellowStairMaterial.diffuseColor=new BABYLON.Color3.Yellow();
+                    
+
+                    smallStep[0].setStepMaterial(stairMaterial);
+                    smallStep[1].setStepMaterial(stairMaterial);
+                    bigStep[0].setStepMaterial(stairMaterial);
+                    bigStep[1].setStepMaterial(stairMaterial);
+
 
                  
 
