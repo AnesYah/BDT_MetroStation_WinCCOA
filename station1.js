@@ -5,6 +5,7 @@ var boxMaterial=[]; // here to store colors
 var dp=[]; // my data points array
 var alarm=[];// my emergency stop array
 var hs = [];
+var maint=[];
 //var Toggle = [true, true, true, true, true];
 var interval, interval2; // this is using in blinks to call the setting interval in stopBlink()
 var direction=0; // stair direction 
@@ -25,6 +26,9 @@ var cameraOffset=1.1643;
 var alarmOffset=0.15;
 var clickedPosition= new BABYLON.Vector3.Zero();
 var _switch=[];
+
+var paneau_hs = [];
+var paneau_maint=[];
 
 
 //buffer.length=8;
@@ -71,6 +75,7 @@ class button
     }
 
 class paneau3D {
+
     constructor(stair)
     {
         this._stair=stair;
@@ -79,9 +84,8 @@ class paneau3D {
         this.button = new BABYLON.GUI.HolographicButton("Open");
         this.manager.addControl(this.button);
         this.button.linkToTransformNode(this.anchor);
-
-
     }
+
 set text(message){this.button.text=message}
 set image(url){this.button.imageUrl=url}
 set position(buttonPosition){this.anchor.position=buttonPosition}
@@ -750,7 +754,7 @@ oaJsApi.dpConnect("BD1_1B1_EM1.status.HS",true,
 
                 if(hs[0]=='false')
                     {
-                        paneau1.visibility=false;
+                        paneau_hs[0].visibility=false;
                         smallStep[0].setStepMaterial(stairMaterial);
                         
                           
@@ -759,7 +763,7 @@ oaJsApi.dpConnect("BD1_1B1_EM1.status.HS",true,
                     {
                         buffer[0]=false;
                         buffer[1]=false;
-                        paneau1.visibility=true;
+                        paneau_hs[0].visibility=true;
                         smallStep[0].setStepMaterial(yellowStairMaterial);
                     }
 
@@ -778,7 +782,7 @@ oaJsApi.dpConnect("BD1_1B1_EM2.status.HS",true,
 
                 if(hs[1]=='false')
                     {
-                        paneau2.visibility=false;
+                        paneau_hs[1].visibility=false;
                         smallStep[1].setStepMaterial(stairMaterial);
                         
                           
@@ -787,7 +791,7 @@ oaJsApi.dpConnect("BD1_1B1_EM2.status.HS",true,
                     {
                         buffer[2]=false;
                         buffer[3]=false;
-                        paneau2.visibility=true;
+                        paneau_hs[1].visibility=true;
                         smallStep[1].setStepMaterial(yellowStairMaterial);
                     }
 
@@ -806,7 +810,7 @@ oaJsApi.dpConnect("BD1_1B1_EM3.status.HS",true,
 
                 if(hs[2]=='false')
                     {
-                        paneau3.visibility=false;
+                        paneau_hs[2].visibility=false;
                         bigStep[0].setStepMaterial(stairMaterial);
                         
                           
@@ -815,7 +819,7 @@ oaJsApi.dpConnect("BD1_1B1_EM3.status.HS",true,
                     {
                         buffer[4]=false;
                         buffer[5]=false;
-                        paneau3.visibility=true;
+                        paneau_hs[2].visibility=true;
                         bigStep[0].setStepMaterial(yellowStairMaterial);
                     }
 
@@ -834,7 +838,7 @@ oaJsApi.dpConnect("BD1_1B1_EM4.status.HS",true,
 
                 if(hs[3]=='false')
                     {
-                        paneau4.visibility=false;
+                        paneau_hs[3].visibility=false;
                         bigStep[1].setStepMaterial(stairMaterial);
                         
                           
@@ -843,8 +847,121 @@ oaJsApi.dpConnect("BD1_1B1_EM4.status.HS",true,
                     {
                         buffer[6]=false;
                         buffer[7]=false;
-                        paneau3.visibility=true;
+                        paneau_hs[3].visibility=true;
                         bigStep[1].setStepMaterial(yellowStairMaterial);
+                    }
+
+                    
+
+            }
+
+    })
+
+
+oaJsApi.dpConnect("BD1_1B1_EM1.status.MAINT",true,
+    {
+
+        success: function(data)
+            {
+                        maint[0]=data.value;
+
+                if(maint[0]=='false')
+                    {
+                        paneau_maint[0].visibility=false;
+                        smallStep[0].setStepMaterial(stairMaterial);
+                        
+                          
+                    }
+                if (maint[0]=='true')
+                    {
+                        buffer[0]=false;
+                        buffer[1]=false;
+                        paneau_maint[0].visibility=true;
+                        smallStep[0].setStepMaterial(redStairMaterial);
+                    }
+
+                    
+
+            }
+
+    })
+
+oaJsApi.dpConnect("BD1_1B1_EM2.status.MAINT",true,
+    {
+
+        success: function(data)
+            {
+                        maint[1]=data.value;
+
+                if(maint[1]=='false')
+                    {
+                        paneau_maint[1].visibility=false;
+                        smallStep[1].setStepMaterial(stairMaterial);
+                        
+                          
+                    }
+                if (maint[1]=='true')
+                    {
+                        buffer[2]=false;
+                        buffer[3]=false;
+                        paneau_maint[1].visibility=true;
+                        smallStep[1].setStepMaterial(redStairMaterial);
+                    }
+
+                    
+
+            }
+
+    })
+
+oaJsApi.dpConnect("BD1_1B1_EM3.status.MAINT",true,
+    {
+
+        success: function(data)
+            {
+                        maint[2]=data.value;
+
+                if(maint[2]=='false')
+                    {
+                        paneau_maint[2].visibility=false;
+                        bigStep[0].setStepMaterial(stairMaterial);
+                        
+                          
+                    }
+                if (hs[2]=='true')
+                    {
+                        buffer[4]=false;
+                        buffer[5]=false;
+                        paneau_maint[2].visibility=true;
+                        bigStep[0].setStepMaterial(redStairMaterial);
+                    }
+
+                    
+
+            }
+
+    })
+
+oaJsApi.dpConnect("BD1_1B1_EM4.status.MAINT",true,
+    {
+
+        success: function(data)
+            {
+                        maint[3]=data.value;
+
+                if(maint[3]=='false')
+                    {
+                        paneau_maint[3].visibility=false;
+                        bigStep[1].setStepMaterial(stairMaterial);
+                        
+                          
+                    }
+                if (maint[3]=='true')
+                    {
+                        buffer[6]=false;
+                        buffer[7]=false;
+                        paneau_maint[3].visibility=true;
+                        bigStep[1].setStepMaterial(redStairMaterial);
                     }
 
                     
@@ -1167,50 +1284,92 @@ var CreateScene=function()
 
 
 
-scene.onReadyObservable.add(function(){
+scene.onReadyObservable.add(function()
+    {
 
-                    // paneau hors service EM1
+        // paneau hors service EM1
 
-                    paneau1= new paneau3D(eM1);
-                    paneau1.text="escalator hors service";
-                    paneau1.image="/data/html/station_BDT/textures/_maintenance.jpg"
-                    paneau1.position = new BABYLON.Vector3(eM1.position.x+0.7,eM1.position.y-0.1,eM1.position.z);
-                    paneau1.rotation = new BABYLON.Vector3(0,3*Math.PI/2,0);
-                    paneau1.scaling = new BABYLON.Vector3(.1,.1,.1); 
-                    paneau1.visibility=false;
+                        paneau_hs[0]= new paneau3D(eM1);
+                        paneau_hs[0].text="escalator hors service";
+                        paneau_hs[0].image="/data/html/station_BDT/textures/hors-service.jpg"
+                        paneau_hs[0].position = new BABYLON.Vector3(eM1.position.x+0.7,eM1.position.y-0.1,eM1.position.z);
+                        paneau_hs[0].rotation = new BABYLON.Vector3(0,3*Math.PI/2,0);
+                        paneau_hs[0].scaling = new BABYLON.Vector3(.1,.1,.1); 
+                        paneau_hs[0].visibility=false;
 
-// paneau hors service EM2
+        // paneau hors service EM2
 
 
-                    paneau2= new paneau3D(eM2);
-                    paneau2.text="escalator hors service";
-                    paneau2.image="/data/html/station_BDT/textures/_maintenance.jpg"
-                    paneau2.position = new BABYLON.Vector3(eM2.position.x+0.7,eM2.position.y+0.1,eM2.position.z);
-                    paneau2.rotation = new BABYLON.Vector3(0,3*Math.PI/2,0);
-                    paneau2.scaling = new BABYLON.Vector3(.1,.1,.1); 
-                    paneau2.visibility=false;
+                        paneau_hs[1]= new paneau3D(eM2);
+                        paneau_hs[1].text="escalator hors service";
+                        paneau_hs[1].image="/data/html/station_BDT/textures/hors-service.jpg"
+                        paneau_hs[1].position = new BABYLON.Vector3(eM2.position.x+0.7,eM2.position.y-0.1,eM2.position.z);
+                        paneau_hs[1].rotation = new BABYLON.Vector3(0,3*Math.PI/2,0);
+                        paneau_hs[1].scaling = new BABYLON.Vector3(.1,.1,.1); 
+                        paneau_hs[1].visibility=false;
 
-// paneau hors service EM3
+        // paneau hors service EM3
 
-                    paneau3= new paneau3D(eM3);
-                    paneau3.text="escalator hors service";
-                    paneau3.image="/data/html/station_BDT/textures/_maintenance.jpg"
-                    paneau3.position = new BABYLON.Vector3(eM3.position.x-1.5,eM3.position.y-.5,eM3.position.z);
-                    paneau3.rotation = new BABYLON.Vector3(0,Math.PI/2,0);
-                    paneau3.scaling = new BABYLON.Vector3(.2,.2,.2); 
-                    paneau3.visibility=false;
+                        paneau_hs[2]= new paneau3D(eM3);
+                        paneau_hs[2].text="escalator hors service";
+                        paneau_hs[2].image="/data/html/station_BDT/textures/hors-service.jpg"
+                        paneau_hs[2].position = new BABYLON.Vector3(eM3.position.x-1.5,eM3.position.y-.5,eM3.position.z);
+                        paneau_hs[2].rotation = new BABYLON.Vector3(0,Math.PI/2,0);
+                        paneau_hs[2].scaling = new BABYLON.Vector3(.2,.2,.2); 
+                        paneau_hs[2].visibility=false;
 
-// paneau hors service EM4
+        // paneau hors service EM4
 
-                    paneau4 = new paneau3D(eM4);
-                    paneau4.text="escalator hors service";
-                    paneau4.image="/data/html/station_BDT/textures/_maintenance.jpg"
-                    paneau4.position = new BABYLON.Vector3(eM4.position.x-0.7,eM4.position.y-0.1,eM4.position.z);
-                    paneau4.rotation = new BABYLON.Vector3(0,Math.PI/2,0);
-                    paneau4.scaling = new BABYLON.Vector3(.1,.1,.1); 
-                    paneau4.visibility=false;
+                        paneau_hs[3] = new paneau3D(eM4);
+                        paneau_hs[3].text="escalator hors service";
+                        paneau_hs[3].image="/data/html/station_BDT/textures/hors-service.jpg"
+                        paneau_hs[3].position = new BABYLON.Vector3(eM4.position.x-0.7,eM4.position.y-.5,eM4.position.z);
+                        paneau_hs[3].rotation = new BABYLON.Vector3(0,Math.PI/2,0);
+                        paneau_hs[3].scaling = new BABYLON.Vector3(.1,.1,.1); 
+                        paneau_hs[3].visibility=false;
 
-})
+        // paneau maintenance EM1
+
+                        paneau_maint[0]= new paneau3D(eM1);
+                        paneau_maint[0].text="escalator en maintenance";
+                        paneau_maint[0].image="/data/html/station_BDT/textures/maintenance.jpg"
+                        paneau_maint[0].position = new BABYLON.Vector3(eM1.position.x+0.7,eM1.position.y-0.1,eM1.position.z);
+                        paneau_maint[0].rotation = new BABYLON.Vector3(0,3*Math.PI/2,0);
+                        paneau_maint[0].scaling = new BABYLON.Vector3(.1,.1,.1); 
+                        paneau_maint[0].visibility=false;
+
+        // paneau maintenance EM2
+
+
+                        paneau_maint[1]= new paneau3D(eM2);
+                        paneau_maint[1].text="escalator en maintenance";
+                        paneau_maint[1].image="/data/html/station_BDT/textures/maintenance.jpg"
+                        paneau_maint[1].position = new BABYLON.Vector3(eM2.position.x+0.7,eM2.position.y-0.1,eM2.position.z);
+                        paneau_maint[1].rotation = new BABYLON.Vector3(0,3*Math.PI/2,0);
+                        paneau_maint[1].scaling = new BABYLON.Vector3(.1,.1,.1); 
+                        paneau_maint[1].visibility=false;
+
+        // paneau hors service EM3
+
+                        paneau_maint[2]= new paneau3D(eM3);
+                        paneau_maint[2].text="escalator en maintenance";
+                        paneau_maint[2].image="/data/html/station_BDT/textures/maintenance.jpg"
+                        paneau_maint[2].position = new BABYLON.Vector3(eM3.position.x-1.5,eM3.position.y-.5,eM3.position.z);
+                        paneau_maint[2].rotation = new BABYLON.Vector3(0,Math.PI/2,0);
+                        paneau_maint[2].scaling = new BABYLON.Vector3(.2,.2,.2); 
+                        paneau_maint[2].visibility=false;
+
+        // paneau maintenance EM4
+
+                        paneau_maint[3] = new paneau3D(eM4);
+                        paneau_maint[3].text="escalator en maintenance";
+                        paneau_maint[3].image="/data/html/station_BDT/textures/maintenance.jpg"
+                        paneau_maint[3].position = new BABYLON.Vector3(eM4.position.x-0.7,eM4.position.y-.5,eM4.position.z);
+                        paneau_maint[3].rotation = new BABYLON.Vector3(0,Math.PI/2,0);
+                        paneau_maint[3].scaling = new BABYLON.Vector3(.1,.1,.1); 
+                        paneau_maint[3].visibility=false;
+                   
+    })
 
 
 
@@ -1222,7 +1381,474 @@ scene.onReadyObservable.add(function(){
 
     var light = new BABYLON.HemisphericLight("HemiLight", new BABYLON.Vector3(4, 6, 1), scene);// ajouter de light
 
-    var adv = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI();
+    var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI"); // create a texture
+
+
+    var panel1= new stackPanel(false,1, "100px");
+
+    panel1.panel.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+
+    advancedTexture.addControl(panel1.panel);
+
+    showButton= new button("filtrer les équipements",callback1)
+    panel1.panel.addControl(showButton.button);
+
+        //-------------------------------------------------------------------------------------------------
+
+    var panel2= new stackPanel(true,"200px","-60px");
+    panel1.panel.addControl(panel2.panel);
+    panel2.visibility=false;
+    //------------------------------------------------------------------------------------------------------
+
+    var button1 = new button("escaliers mécaniques",callbackButton1);
+    panel2.panel.addControl(button1.button);
+    //----------------------------------------------------------------------------------------------------------
+    var button2 = new button("Ascenceurs",callbackButton1);
+    panel2.panel.addControl(button2.button);
+    //--------------------------------------------------------------------------------------------------------
+    var button3 = new button("Climatisation",function () {null});
+    panel2.panel.addControl(button3.button);
+    //-------------------------------------------------------------------------------------------------------
+    var button4 = new button("Ventilation",function () {null});
+    panel2.panel.addControl(button4.button);
+    //--------------------------------------------------------------------------------------------------------
+
+    var panel3= new stackPanel(true,"150px","-60px");
+    panel1.panel.addControl(panel3.panel);
+    panel3.visibility=false;
+
+    //--------------------------------------------------------------------------------------------------------
+
+    var button5 = new button("Monter",callbackButton);
+    button5.buttonColor="green";
+    panel3.panel.addControl(button5.button);
+    //----------------------------------------------------------------------------------------------------------
+    var button6 = new button("Descendre",callbackButton);
+    button6.buttonColor="green";
+    panel3.panel.addControl(button6.button);
+    //--------------------------------------------------------------------------------------------------------
+    var button7 = new button("Maintenance",callbackButton);
+    button7.buttonColor="green";
+    panel3.panel.addControl(button7.button);
+    //-------------------------------------------------------------------------------------------------------
+    var button8 = new button("Hors-Service",callbackButton);
+    button8.buttonColor="green";
+    panel3.panel.addControl(button8.button);
+    //--------------------------------------------------------------------------------------------------------
+    var button13 = new button("Aucun",callbackButton);
+    button13.buttonColor="green";
+    panel3.panel.addControl(button13.button);
+
+
+
+
+    var panel4= new stackPanel(true,"150px","-60px");
+    panel1.panel.addControl(panel4.panel);
+    panel4.visibility=false;
+
+    
+    var button9 = new button("Button9",callbackButton);
+    button9.buttonColor="green";
+    panel4.panel.addControl(button9.button);
+    //----------------------------------------------------------------------------------------------------------
+    var button10 = new button("Button10",callbackButton);
+    button10.buttonColor="green";
+    panel4.panel.addControl(button10.button);
+    //--------------------------------------------------------------------------------------------------------
+    var button11 = new button("Button11",callbackButton);
+    button11.buttonColor="green";
+    panel4.panel.addControl(button11.button);
+    //-------------------------------------------------------------------------------------------------------
+    var button12 = new button("Button12",callbackButton);
+    button12.buttonColor="green";
+    panel4.panel.addControl(button12.button);
+    //--------------------------------------------------------------------------------------------------------
+    
+
+
+    function callback1 ()
+        {
+            if (showButton.toggle)
+                {
+                    showButton.button.background="green";
+                    panel2.visibility=true;
+                        for(var i=0; i<niv.length;i++)
+                    {
+                        niv[i].setEnabled(false);
+
+                    }
+                    eM1.setEnabled(false);
+                    eM2.setEnabled(false);
+                    eM3.setEnabled(false); 
+                    eM4.setEnabled(false);
+                    smallStep[0].hideStep(false);
+                    smallStep[1].hideStep(false);
+                    bigStep[0].hideStep(false);
+                    bigStep[1].hideStep(false)
+                    for(var i=0; i<paneau_hs.length; i++)
+                        {
+                            paneau_hs[i].visibility=false;
+                        }
+                    for(var i=0; i<paneau_maint.length; i++)
+                        {
+                            paneau_maint[i].visibility=false;
+                        }
+
+                }
+            else if (!showButton.toggle)
+                {
+                    showButton.button.background=null;
+                    panel2.visibility=false;
+                    for(var i=0; i<niv.length; i++)
+                        {
+                            niv[i].setEnabled(true);
+                        }
+                    eM1.setEnabled(true);
+                    eM2.setEnabled(true);
+                    eM3.setEnabled(true); 
+                    eM4.setEnabled(true);
+                    smallStep[0].hideStep(true);
+                    smallStep[1].hideStep(true);
+                    bigStep[0].hideStep(true);
+                    bigStep[1].hideStep(true)
+                    if(hs[0]=='true')
+                        paneau_hs[0].visibility=true;
+                    if(hs[1]== 'true')
+                        paneau_hs[1].visibility=true;
+                    if(hs[2]=='true')
+                        paneau_hs[2].visibility=true;
+                    if(hs[3]=='true')
+                        paneau_hs[3].visibility=true;
+                    if(maint[0]=='true')
+                        paneau_maint[0].visibility=true;
+                    if(maint[1]== 'true')
+                        paneau_maint[1].visibility=true;
+                    if(maint[2]=='true')
+                        paneau_maint[2].visibility=true;
+                    if(maint[3]=='true')
+                        paneau_maint[3].visibility=true;
+
+                }
+
+            showButton.toggle=!showButton.toggle;
+        }
+    function callbackButton1(button)
+    {
+               
+        switch(button){
+
+        case button1 :  if (button.toggle)
+                {
+                    button.button.background="green";
+                    panel3.visibility=true;
+                    panel4.visibility=false;
+                    //niv[1].setEnabled(true);
+                    eM1.setEnabled(true);
+                    eM2.setEnabled(true);
+                    eM3.setEnabled(true); 
+                    eM4.setEnabled(true);
+                    smallStep[0].hideStep(true);
+                    smallStep[1].hideStep(true);
+                    bigStep[0].hideStep(true);
+                    bigStep[1].hideStep(true)
+                }
+            else if (!button.toggle)
+                {
+                    button.button.background=null;
+                    panel3.visibility=false;
+                    panel4.visibility=false;
+                    //niv[1].setEnabled(false);
+                    eM1.setEnabled(false);
+                    eM2.setEnabled(false);
+                    eM3.setEnabled(false); 
+                    eM4.setEnabled(false);
+                    smallStep[0].hideStep(false);
+                    smallStep[1].hideStep(false);
+                    bigStep[0].hideStep(false);
+                    bigStep[1].hideStep(false)
+                }
+            button.toggle=!button.toggle;
+            break;
+
+        case button2 :   if (button.toggle)
+                {
+                    button.button.background="green";
+                    panel4.visibility=true;
+                    panel3.visibility=false;
+                }
+            else if (!button.toggle)
+                {
+                    button.button.background=null;
+                    panel4.visibility=false;
+                }
+            button.toggle=!button.toggle;
+            break;
+
+
+        }
+            
+            
+
+    }
+
+    function callbackButton(button)
+    {
+            
+                   
+            if (button.toggle)
+                {
+                    button.button.background=null;
+                    switch (button.text){
+                        case "Monter" : if(buffer[0]=='true')
+                                            {
+                                                eM1.setEnabled(false);
+                                                smallStep[0].hideStep(false);
+                                            }
+                                        if (buffer[2]=='true')
+                                            {
+                                               eM2.setEnabled(false);
+                                               smallStep[1].hideStep(false);
+                                            }
+                                        if (buffer[4]=='true')
+                                            {
+                                               eM3.setEnabled(false);
+                                               bigStep[0].hideStep(false); 
+                                            }
+                                        if (buffer[6]=='true')
+                                            {
+                                               eM4.setEnabled(false);
+                                               bigStep[1].hideStep(false); 
+                                            }
+                                            break;
+                        case "Descendre" : if(buffer[1]=='true')
+                                            {
+                                                eM1.setEnabled(false);
+                                                smallStep[0].hideStep(false);
+                                            }
+                                        if (buffer[3]=='true')
+                                            {
+                                               eM2.setEnabled(false);
+                                               smallStep[1].hideStep(false); 
+                                            }
+                                        if (buffer[5]=='true')
+                                            {
+                                               eM3.setEnabled(false);
+                                               bigStep[0].hideStep(false); 
+                                            }
+                                        if (buffer[7]=='true')
+                                            {
+                                               eM4.setEnabled(false);
+                                               bigStep[1].hideStep(false); 
+                                            } 
+                                            break;
+                        case "Hors-Service" : if(hs[0]=='true')
+                                            {
+                                                eM1.setEnabled(false);
+                                                smallStep[0].hideStep(false);
+                                                paneau_hs[0].visibility=false;
+                                            }
+                                        if (hs[1]=='true')
+                                            {
+                                               eM2.setEnabled(false);
+                                               smallStep[1].hideStep(false); 
+                                               paneau_hs[1].visibility=false;
+
+                                            }
+                                        if (hs[2]=='true')
+                                            {
+                                               eM3.setEnabled(false);
+                                               bigStep[0].hideStep(false);
+                                               paneau_hs[2].visibility=false;
+                                            }
+                                        if (hs[3]=='true')
+                                            {
+                                               eM4.setEnabled(false);
+                                               bigStep[1].hideStep(false);
+                                               paneau_hs[3].visibility=false; 
+                                            } 
+                                            break;
+
+                        case "Maintenance" : if(maint[0]=='true')
+                                            {
+                                                eM1.setEnabled(false);
+                                                smallStep[0].hideStep(false);
+                                                paneau_maint[0].visibility=false;
+                                            }
+                                        if (maint[1]=='true')
+                                            {
+                                               eM2.setEnabled(false);
+                                               smallStep[1].hideStep(false); 
+                                               paneau_maint[1].visibility=false;
+                                            }
+                                        if (maint[2]=='true')
+                                            {
+                                               eM3.setEnabled(false);
+                                               bigStep[0].hideStep(false);
+                                               paneau_maint[2].visibility=false;
+                                            }
+                                        if (maint[3]=='true')
+                                            {
+                                               eM4.setEnabled(false);
+                                               bigStep[1].hideStep(false); 
+                                               paneau_maint[3].visibility=false;
+                                            } 
+                                            break;
+                        case "Aucun" : if(buffer[0]=='false' &&  buffer[1]=='false' && hs[0]=='false' && maint[0]=='false')
+                                            {
+                                                eM1.setEnabled(false);
+                                                smallStep[0].hideStep(false);
+                                            }
+                                        if (buffer[2]=='false' &&  buffer[3]=='false' && hs[1]=='false' && maint[1]=='false')
+                                            {
+                                               eM2.setEnabled(false);
+                                               smallStep[1].hideStep(false);
+                                            }
+                                        if (buffer[4]=='false' &&  buffer[5]=='false' && hs[2]=='false' && maint[2]=='false')
+                                            {
+                                               eM3.setEnabled(false);
+                                               bigStep[0].hideStep(false); 
+                                            }
+                                        if (buffer[6]=='false' &&  buffer[7]=='false' && hs[3]=='false' && maint[3]=='false')
+                                            {
+                                               eM4.setEnabled(false);
+                                               bigStep[1].hideStep(false); 
+                                            }
+                                            break;
+
+                }
+            }
+            else if (!button.toggle)
+                {
+                    button.button.background="green";
+                             switch (button.text){
+                        case "Monter" : if(buffer[0]=='true')
+                                            {
+                                                eM1.setEnabled(true);
+                                                smallStep[0].hideStep(true);
+                                            }
+                                        if (buffer[2]=='true')
+                                            {
+                                               eM2.setEnabled(true);
+                                               smallStep[1].hideStep(true);
+                                            }
+                                        if (buffer[4]=='true')
+                                            {
+                                               eM3.setEnabled(true);
+                                               bigStep[0].hideStep(true); 
+                                            }
+                                        if (buffer[6]=='true')
+                                            {
+                                               eM4.setEnabled(true);
+                                               bigStep[1].hideStep(true); 
+                                            }
+                                            break;
+                        case "Descendre" : if(buffer[1]=='true')
+                                            {
+                                                eM1.setEnabled(true);
+                                                smallStep[0].hideStep(true);
+                                            }
+                                        if (buffer[3]=='true')
+                                            {
+                                               eM2.setEnabled(true);
+                                               smallStep[1].hideStep(true); 
+                                            }
+                                        if (buffer[5]=='true')
+                                            {
+                                               eM3.setEnabled(false);
+                                               bigStep[0].hideStep(true); 
+                                            }
+                                        if (buffer[7]=='true')
+                                            {
+                                               eM4.setEnabled(true);
+                                               bigStep[1].hideStep(true); 
+                                            } 
+                                            break;
+                        case "Hors-Service" : if(hs[0]=='true')
+                                            {
+                                                eM1.setEnabled(true);
+                                                smallStep[0].hideStep(true);
+                                                paneau_hs[0].visibility=true;
+                                            }
+                                        if (hs[1]=='true')
+                                            {
+                                               eM2.setEnabled(true);
+                                               smallStep[1].hideStep(true);
+                                               paneau_hs[1].visibility=true;
+
+                                            }
+                                        if (hs[2]=='true')
+                                            {
+                                               eM3.setEnabled(true);
+                                               bigStep[0].hideStep(true);
+                                               paneau_hs[2].visibility=true;
+                                            }
+                                        if (hs[3]=='true')
+                                            {
+                                               eM4.setEnabled(true);
+                                               bigStep[1].hideStep(true);
+                                               paneau_hs[3].visibility=true; 
+                                            } 
+                                            break;
+
+                        case "Maintenance" : if(maint[0]=='true')
+                                            {
+                                                eM1.setEnabled(true);
+                                                smallStep[0].hideStep(true);
+                                                paneau_maint[0].visibility=true;
+                                            }
+                                        if (maint[1]=='true')
+                                            {
+                                               eM2.setEnabled(true);
+                                               smallStep[1].hideStep(true);
+                                               paneau_maint[1].visibility=true; 
+                                            }
+                                        if (maint[2]=='true')
+                                            {
+                                               eM3.setEnabled(true);
+                                               bigStep[0].hideStep(true);
+                                               paneau_maint[2].visibility=true;
+                                            }
+                                        if (maint[3]=='true')
+                                            {
+                                               eM4.setEnabled(true);
+                                               bigStep[1].hideStep(true);
+                                               paneau_maint[3].visibility=true; 
+                                            } 
+                                            break;
+                        case "Aucun" : if(buffer[0]=='false' &&  buffer[1]=='false' && hs[0]=='false' && maint[0]=='false')
+                                            {
+                                                eM1.setEnabled(true);
+                                                smallStep[0].hideStep(true);
+                                            }
+                                        if (buffer[2]=='false' &&  buffer[3]=='false' && hs[1]=='false' && maint[1]=='false')
+                                            {
+                                               eM2.setEnabled(true);
+                                               smallStep[1].hideStep(true);
+                                            }
+                                        if (buffer[4]=='false' &&  buffer[5]=='false' && hs[2]=='false' && maint[2]=='false')
+                                            {
+                                               eM3.setEnabled(true);
+                                               bigStep[0].hideStep(true); 
+                                            }
+                                        if (buffer[6]=='false' &&  buffer[7]=='false' && hs[3]=='false' && maint[3]=='false')
+                                            {
+                                               eM4.setEnabled(true);
+                                               bigStep[1].hideStep(true); 
+                                            }
+                                            break;
+
+                }
+
+
+
+                }
+
+            button.toggle=!button.toggle;
+        
+
+    }
+
+
 
     var btn1 = BABYLON.GUI.Button.CreateSimpleButton("", "Hide level 0");
         btn1.width = "100px";
@@ -1231,7 +1857,7 @@ scene.onReadyObservable.add(function(){
         btn1.verticalAlignment = 1;
         btn1.horizontalAlignment = 0;
         btn1.left = "15px";
-        btn1.top = "-15px";
+        btn1.top = "-630px";
 
     var btn2 = BABYLON.GUI.Button.CreateSimpleButton("", "hide level 1");
         btn2.width = "100px";
@@ -1240,7 +1866,7 @@ scene.onReadyObservable.add(function(){
         btn2.verticalAlignment = 1;
         btn2.horizontalAlignment = 0;
         btn2.left = "130px"
-        btn2.top = "-15px";
+        btn2.top = "-630px";
         
     var btn3 = BABYLON.GUI.Button.CreateSimpleButton("", "hide level 2");
         btn3.width = "100px";
@@ -1249,7 +1875,7 @@ scene.onReadyObservable.add(function(){
         btn3.verticalAlignment = 1;
         btn3.horizontalAlignment = 0;
         btn3.left = "250px"
-        btn3.top = "-15px";
+        btn3.top = "-630px";
     var btn4 = BABYLON.GUI.Button.CreateSimpleButton("", "hide level 3");
         btn4.width = "100px";
         btn4.height = "30px"
@@ -1257,7 +1883,7 @@ scene.onReadyObservable.add(function(){
         btn4.verticalAlignment = 1;
         btn4.horizontalAlignment = 0;
         btn4.left = "370px"
-        btn4.top = "-15px";
+        btn4.top = "-630px";
   
  _switch=[true,true,true,true];
 
@@ -1341,10 +1967,10 @@ scene.onReadyObservable.add(function(){
 
 
 
-    adv.addControl(btn1);
-    adv.addControl(btn2);
-    adv.addControl(btn3);
-    adv.addControl(btn4);
+    advancedTexture.addControl(btn1);
+    advancedTexture.addControl(btn2);
+    advancedTexture.addControl(btn3);
+    advancedTexture.addControl(btn4);
 
 
 
