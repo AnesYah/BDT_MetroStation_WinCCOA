@@ -42,6 +42,8 @@ class stackPanel
                     this._panel.isVertical= state;
                     this._panel.width=_width;
                     this._panel.top=_top;
+                    this._panel.scaleX=.8;
+                    this._panel.scaleY=.8;
                 }
 
         get panel() {return this._panel}
@@ -56,7 +58,7 @@ class button
                 this._text=text;
                 this._button = BABYLON.GUI.Button.CreateSimpleButton("button", this.text);
                 this._toggle=true;
-                this._button.width ="140px";
+                this._button.width ="110px";
                 this._button.height = "40px";
                 this._button.color = "white";
                 this._button.onPointerUpObservable.add(()=>
@@ -539,8 +541,8 @@ oaJsApi.dpConnect("BD1_1B1_EM1.status.ARRET_URGENCE",true,
 					}
 				else if (alarm[0]='true')
 					{
-						buffer[0]=false;
-						buffer[1]=false;
+						buffer[0]='false';
+						buffer[1]='false';
 						
 			            if(!compteur)
 			                       {
@@ -590,8 +592,8 @@ oaJsApi.dpConnect("BD1_1B1_EM2.status.ARRET_URGENCE",true,
 					}
 				else if (alarm[1]='true')
 					{
-						buffer[2]=false;
-						buffer[3]=false;
+						buffer[2]='false';
+						buffer[3]='false';
 			            if(!compteur)
 	                       {
 	                           niv2Set.forEach(mesh=>
@@ -638,8 +640,8 @@ oaJsApi.dpConnect("BD1_1B1_EM3.status.ARRET_URGENCE",true,
 					}
 				else if (alarm[2]='true')
 					{
-						buffer[4]=false;
-						buffer[5]=false;
+						buffer[4]='false';
+						buffer[5]='false';
  					
 			            if(!compteur)
                             {
@@ -697,8 +699,8 @@ oaJsApi.dpConnect("BD1_1B1_EM4.status.ARRET_URGENCE",true,
 					}
 				else if (alarm[3]='true')
 					{
-						buffer[6]=false;
-						buffer[7]=false;
+						buffer[6]='false';
+						buffer[7]='false';
 
 			            if(!compteur)
                             {
@@ -750,19 +752,15 @@ oaJsApi.dpConnect("BD1_1B1_EM1.status.HS",true,
 
         success: function(data)
             {
-                        hs[0]=data.value;
-
+                hs[0]=data.value;
                 if(hs[0]=='false')
                     {
                         paneau_hs[0].visibility=false;
-                        smallStep[0].setStepMaterial(stairMaterial);
-                        
-                          
+                        smallStep[0].setStepMaterial(stairMaterial);            
                     }
                 if (hs[0]=='true')
                     {
-                        buffer[0]=false;
-                        buffer[1]=false;
+                      
                         paneau_hs[0].visibility=true;
                         smallStep[0].setStepMaterial(yellowStairMaterial);
                     }
@@ -789,8 +787,7 @@ oaJsApi.dpConnect("BD1_1B1_EM2.status.HS",true,
                     }
                 if (hs[1]=='true')
                     {
-                        buffer[2]=false;
-                        buffer[3]=false;
+                      
                         paneau_hs[1].visibility=true;
                         smallStep[1].setStepMaterial(yellowStairMaterial);
                     }
@@ -817,8 +814,7 @@ oaJsApi.dpConnect("BD1_1B1_EM3.status.HS",true,
                     }
                 if (hs[2]=='true')
                     {
-                        buffer[4]=false;
-                        buffer[5]=false;
+                      
                         paneau_hs[2].visibility=true;
                         bigStep[0].setStepMaterial(yellowStairMaterial);
                     }
@@ -845,8 +841,7 @@ oaJsApi.dpConnect("BD1_1B1_EM4.status.HS",true,
                     }
                 if (hs[3]=='true')
                     {
-                        buffer[6]=false;
-                        buffer[7]=false;
+                      
                         paneau_hs[3].visibility=true;
                         bigStep[1].setStepMaterial(yellowStairMaterial);
                     }
@@ -874,8 +869,7 @@ oaJsApi.dpConnect("BD1_1B1_EM1.status.MAINT",true,
                     }
                 if (maint[0]=='true')
                     {
-                        buffer[0]=false;
-                        buffer[1]=false;
+                        
                         paneau_maint[0].visibility=true;
                         smallStep[0].setStepMaterial(redStairMaterial);
                     }
@@ -901,9 +895,7 @@ oaJsApi.dpConnect("BD1_1B1_EM2.status.MAINT",true,
                           
                     }
                 if (maint[1]=='true')
-                    {
-                        buffer[2]=false;
-                        buffer[3]=false;
+                    {                     
                         paneau_maint[1].visibility=true;
                         smallStep[1].setStepMaterial(redStairMaterial);
                     }
@@ -928,10 +920,8 @@ oaJsApi.dpConnect("BD1_1B1_EM3.status.MAINT",true,
                         
                           
                     }
-                if (hs[2]=='true')
+                if (maint[2]=='true')
                     {
-                        buffer[4]=false;
-                        buffer[5]=false;
                         paneau_maint[2].visibility=true;
                         bigStep[0].setStepMaterial(redStairMaterial);
                     }
@@ -953,13 +943,10 @@ oaJsApi.dpConnect("BD1_1B1_EM4.status.MAINT",true,
                     {
                         paneau_maint[3].visibility=false;
                         bigStep[1].setStepMaterial(stairMaterial);
-                        
-                          
+              
                     }
                 if (maint[3]=='true')
-                    {
-                        buffer[6]=false;
-                        buffer[7]=false;
+                    {                     
                         paneau_maint[3].visibility=true;
                         bigStep[1].setStepMaterial(redStairMaterial);
                     }
@@ -969,6 +956,7 @@ oaJsApi.dpConnect("BD1_1B1_EM4.status.MAINT",true,
             }
 
     })
+
 
 
 
@@ -1240,9 +1228,13 @@ var CreateScene=function()
                     RedBox = new BABYLON.Color3.Red();
 
                     eM1 = scene.getMeshByID("EscalierMecanique1");
+                    eM1.name="EM1";
                     eM2 = scene.getMeshByID("EscalierMecanique2");
+                    eM2.name="EM2";
                     eM3 = scene.getMeshByID("EscalierMecanique3");
+                    eM3.name="EM3";
                     eM4 = scene.getMeshByID("EscalierMecanique4");
+                    eM4.name="EM4";
 
                     arretUrgence1=scene.getMeshByID("ArretUrgence1");
                     arretUrgence2=scene.getMeshByID("ArretUrgence2");
@@ -1323,9 +1315,9 @@ scene.onReadyObservable.add(function()
                         paneau_hs[3] = new paneau3D(eM4);
                         paneau_hs[3].text="escalator hors service";
                         paneau_hs[3].image="/data/html/station_BDT/textures/hors-service.jpg"
-                        paneau_hs[3].position = new BABYLON.Vector3(eM4.position.x-0.7,eM4.position.y-.5,eM4.position.z);
+                        paneau_hs[3].position = new BABYLON.Vector3(eM4.position.x-1.5,eM4.position.y-.5,eM4.position.z);
                         paneau_hs[3].rotation = new BABYLON.Vector3(0,Math.PI/2,0);
-                        paneau_hs[3].scaling = new BABYLON.Vector3(.1,.1,.1); 
+                        paneau_hs[3].scaling = new BABYLON.Vector3(.2,.2,.2); 
                         paneau_hs[3].visibility=false;
 
         // paneau maintenance EM1
@@ -1364,7 +1356,7 @@ scene.onReadyObservable.add(function()
                         paneau_maint[3] = new paneau3D(eM4);
                         paneau_maint[3].text="escalator en maintenance";
                         paneau_maint[3].image="/data/html/station_BDT/textures/maintenance.jpg"
-                        paneau_maint[3].position = new BABYLON.Vector3(eM4.position.x-0.7,eM4.position.y-.5,eM4.position.z);
+                        paneau_maint[3].position = new BABYLON.Vector3(eM4.position.x-1.5,eM4.position.y-.5,eM4.position.z);
                         paneau_maint[3].rotation = new BABYLON.Vector3(0,Math.PI/2,0);
                         paneau_maint[3].scaling = new BABYLON.Vector3(.1,.1,.1); 
                         paneau_maint[3].visibility=false;
@@ -1384,7 +1376,7 @@ scene.onReadyObservable.add(function()
     var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI"); // create a texture
 
 
-    var panel1= new stackPanel(false,1, "100px");
+    var panel1= new stackPanel(false,1.25, "-270px");
 
     panel1.panel.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
 
@@ -1393,9 +1385,10 @@ scene.onReadyObservable.add(function()
     showButton= new button("filtrer les équipements",callback1)
     panel1.panel.addControl(showButton.button);
 
+
         //-------------------------------------------------------------------------------------------------
 
-    var panel2= new stackPanel(true,"200px","-60px");
+    var panel2= new stackPanel(true,"110px","40px");
     panel1.panel.addControl(panel2.panel);
     panel2.visibility=false;
     //------------------------------------------------------------------------------------------------------
@@ -1413,7 +1406,7 @@ scene.onReadyObservable.add(function()
     panel2.panel.addControl(button4.button);
     //--------------------------------------------------------------------------------------------------------
 
-    var panel3= new stackPanel(true,"150px","-60px");
+    var panel3= new stackPanel(true,"110px","50px");
     panel1.panel.addControl(panel3.panel);
     panel3.visibility=false;
 
@@ -1551,6 +1544,23 @@ scene.onReadyObservable.add(function()
                     smallStep[1].hideStep(true);
                     bigStep[0].hideStep(true);
                     bigStep[1].hideStep(true)
+
+                    if(hs[0]=='true')
+                        paneau_hs[0].visibility=true;
+                    if(hs[1]== 'true')
+                        paneau_hs[1].visibility=true;
+                    if(hs[2]=='true')
+                        paneau_hs[2].visibility=true;
+                    if(hs[3]=='true')
+                        paneau_hs[3].visibility=true;
+                    if(maint[0]=='true')
+                        paneau_maint[0].visibility=true;
+                    if(maint[1]== 'true')
+                        paneau_maint[1].visibility=true;
+                    if(maint[2]=='true')
+                        paneau_maint[2].visibility=true;
+                    if(maint[3]=='true')
+                        paneau_maint[3].visibility=true;
                 }
             else if (!button.toggle)
                 {
@@ -1566,6 +1576,14 @@ scene.onReadyObservable.add(function()
                     smallStep[1].hideStep(false);
                     bigStep[0].hideStep(false);
                     bigStep[1].hideStep(false)
+                    for(var i=0; i<paneau_hs.length; i++)
+                        {
+                            paneau_hs[i].visibility=false;
+                        }
+                    for(var i=0; i<paneau_maint.length; i++)
+                        {
+                            paneau_maint[i].visibility=false;
+                        }
                 }
             button.toggle=!button.toggle;
             break;
@@ -1693,7 +1711,7 @@ scene.onReadyObservable.add(function()
                                                paneau_maint[3].visibility=false;
                                             } 
                                             break;
-                        case "Aucun" : if(buffer[0]=='false' &&  buffer[1]=='false' && hs[0]=='false' && maint[0]=='false')
+                    case "Aucun" : if(buffer[0]=='false' && buffer[1]=='false' && hs[0]=='false' && maint[0]=='false')
                                             {
                                                 eM1.setEnabled(false);
                                                 smallStep[0].hideStep(false);
@@ -1815,7 +1833,7 @@ scene.onReadyObservable.add(function()
                                                paneau_maint[3].visibility=true; 
                                             } 
                                             break;
-                        case "Aucun" : if(buffer[0]=='false' &&  buffer[1]=='false' && hs[0]=='false' && maint[0]=='false')
+                        case "Aucun" : if(buffer[0]=='false' && buffer[1]=='false' && hs[0]=='false' && maint[0]=='false')
                                             {
                                                 eM1.setEnabled(true);
                                                 smallStep[0].hideStep(true);
