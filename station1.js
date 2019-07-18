@@ -38,7 +38,7 @@ class rectangle{
     constructor(advancedTexture)
     {
         this.rect1 = new BABYLON.GUI.Rectangle();
-        this.rect1.width = 0.3;
+        this.rect1.width = 0.4;
         this.rect1.height = "100px";
         this.rect1.cornerRadius = 10;
         this.rect1.color = "White";
@@ -50,10 +50,9 @@ class rectangle{
         this.text1 = new BABYLON.GUI.TextBlock(); 
         this.text1.color = "white";
         this.text1.fontSize = 18;
-        this.rect1.addControl(this.text1); 
-    }
+        this.rect1.addControl(this.text1);     }
 
-text(name, state){ this.text1.text="Nature :" + " " + name + "\n" + "State :" + " " + state}
+text(name, state, stairRect){ this.text1.text="Nature :" + " " + name + "\n" + "State :" + " " + state + "\n" + "Durée d'activation : " + stairRect.heures + " : " + stairRect.minutes + " : " + stairRect.seconds}
 set visibility(state) {this.rect1.isVisible=state}
 }
 
@@ -102,10 +101,11 @@ class button
 
 class paneau3D {
 
-    constructor(stair, state)
+    constructor(stair, state, stairRect)
     {
         this._stair=stair;
         this._state=state;
+        this._stairRect=stairRect;
         this.anchor = new BABYLON.AbstractMesh("anchor", scene);
         this.manager = new BABYLON.GUI.GUI3DManager(scene);
         this.button = new BABYLON.GUI.HolographicButton("Open");
@@ -116,14 +116,14 @@ class paneau3D {
             () => {    
                 if (this.toggle)
                     {
-                        rect = new rectangle(advancedTexture);
+                        this.rect = new rectangle(advancedTexture);
                         
-                        rect.text(this._stair.name,this._state);
+                        this.rect.text(this._stair.name,this._state, this._stairRect);
                     }
                 else if (!this.toggle)
                     {
-                       rect.visibility=false;
-                       rect=null; 
+                       this.rect.visibility=false;
+                       this.rect=null; 
                     }
                  this.toggle=!this.toggle
                   }       
@@ -267,6 +267,10 @@ function stair(numSteps,stepWidth,stepHeight,stepDepth)
         //this.oldMaterial= null;
         this.step=BABYLON.MeshBuilder.CreateBox('', {width:this.stepWidth, height:this.stepHeight, depth:this.stepDepth}, scene);
         this.stairs = new BABYLON.TransformNode('stairs', scene);
+        this.duree = 0;
+        this.seconds = 0;
+        this.minutes = 0;
+        this.heures = 0;
 
 
         this.step.material=stairMaterial;
@@ -335,6 +339,27 @@ stair.prototype.DynStair=function(dir,escalierPosition,stepYrotation)
                     step.position.x = Math.sin(a)*this.distZ*dir//+stairXposition;
                     step.rotation.y=Math.PI/2;
                     this.stairs.rotation.y=stepYrotation;
+                    if(this.duree != 4146)
+                        {
+                            this.duree=this.duree+1;
+                        }
+                    else if (this.duree==4146)
+                        {
+                            this.seconds=this.seconds+1;
+                            this.duree=0;
+                        }
+                    if (this.seconds==60)
+
+                        {
+                            this.minutes=this.minutes+1;
+                            this.seconds=0;
+                        }
+                    if (this.minutes==60)
+
+                        {
+                            this.heures=this.heures+1;
+                            this.minutes=0;
+                        }
 
                 }
 
@@ -801,14 +826,17 @@ oaJsApi.dpConnect("BD1_1B1_EM1.status.HS",true,
                     {
                         paneau_hs[0].visibility=false;
                         smallStep[0].setStepMaterial(stairMaterial);
-                        paneau_hs[0]=null;           
+                        paneau_hs[0].rect.visibility=false;
+                        paneau_hs[0].rect=null; 
+                        paneau_hs[0]=null;  
+         
                     }
                 if (hs[0]=='true')
                     {
                       
                         smallStep[0].setStepMaterial(yellowStairMaterial);
                     // paneau hors service EM1
-                        paneau_hs[0]= new paneau3D(eM1, "hors-service");
+                        paneau_hs[0]= new paneau3D(eM1, "hors-service", smallStep[0]);
                         paneau_hs[0].text="escalator hors service";
                         paneau_hs[0].image="/data/html/station_BDT/textures/hors-service.jpg"
                         paneau_hs[0].position = new BABYLON.Vector3(eM1.position.x+0.7,eM1.position.y-0.2,eM1.position.z);
@@ -833,16 +861,16 @@ oaJsApi.dpConnect("BD1_1B1_EM2.status.HS",true,
                     {
                         paneau_hs[1].visibility=false;
                         smallStep[1].setStepMaterial(stairMaterial);
-                        paneau_hs[1]=null;
-                        
-                          
+                        paneau_hs[1].rect.visibility=false;
+                        paneau_hs[1]=null;  
+                        paneau_hs[1].rect=null;                     
                     }
                 if (hs[1]=='true')
                     {
                       
                         smallStep[1].setStepMaterial(yellowStairMaterial);
         // paneau hors service EM2
-                        paneau_hs[1]= new paneau3D(eM2, "hors-service");
+                        paneau_hs[1]= new paneau3D(eM2, "hors-service",smallStep[1]);
                         paneau_hs[1].text="escalator hors service";
                         paneau_hs[1].image="/data/html/station_BDT/textures/hors-service.jpg"
                         paneau_hs[1].position = new BABYLON.Vector3(eM2.position.x+0.7,eM2.position.y-0.2,eM2.position.z);
@@ -867,7 +895,10 @@ oaJsApi.dpConnect("BD1_1B1_EM3.status.HS",true,
                     {
                         paneau_hs[2].visibility=false;
                         bigStep[0].setStepMaterial(stairMaterial);
+                        paneau_hs[2].rect.visibility=false;
+                        paneau_hs[2].rect=null;
                         paneau_hs[2]=null;
+
                         
                           
                     }
@@ -876,7 +907,7 @@ oaJsApi.dpConnect("BD1_1B1_EM3.status.HS",true,
                       
                         bigStep[0].setStepMaterial(yellowStairMaterial);
                     // paneau hors service EM3
-                        paneau_hs[2]= new paneau3D(eM3, "hors-service");
+                        paneau_hs[2]= new paneau3D(eM3, "hors-service", bigStep[0]);
                         paneau_hs[2].text="escalator hors service";
                         paneau_hs[2].image="/data/html/station_BDT/textures/hors-service.jpg"
                         paneau_hs[2].position = new BABYLON.Vector3(eM3.position.x-1.5,eM3.position.y-.5,eM3.position.z);
@@ -901,7 +932,10 @@ oaJsApi.dpConnect("BD1_1B1_EM4.status.HS",true,
                     {
                         paneau_hs[3].visibility=false;
                         bigStep[1].setStepMaterial(stairMaterial);
-                        paneau_hs[3]=null;      
+                        paneau_hs[3].rect.visibility=false;
+                        paneau_hs[3].rect=null; 
+                        paneau_hs[3]=null; 
+    
                           
                     }
                 if (hs[3]=='true')
@@ -909,7 +943,7 @@ oaJsApi.dpConnect("BD1_1B1_EM4.status.HS",true,
                       
                         bigStep[1].setStepMaterial(yellowStairMaterial);
                                 // paneau hors service EM4
-                        paneau_hs[3] = new paneau3D(eM4,"hors-service");
+                        paneau_hs[3] = new paneau3D(eM4,"hors-service",bigStep[1]);
                         paneau_hs[3].text="escalator hors service";
                         paneau_hs[3].image="/data/html/station_BDT/textures/hors-service.jpg"
                         paneau_hs[3].position = new BABYLON.Vector3(eM4.position.x-1.5,eM4.position.y-.5,eM4.position.z);
@@ -936,7 +970,10 @@ oaJsApi.dpConnect("BD1_1B1_EM1.status.MAINT",true,
                     {
                         paneau_maint[0].visibility=false;
                         smallStep[0].setStepMaterial(stairMaterial);
+                        paneau_maint[0].rect.visibility=false;
+                        paneau_maint[0].rect=null;
                         paneau_maint[0]=null;
+
                         
                           
                     }
@@ -945,7 +982,7 @@ oaJsApi.dpConnect("BD1_1B1_EM1.status.MAINT",true,
                         
                         smallStep[0].setStepMaterial(redStairMaterial);
                     // paneau maintenance EM1
-                        paneau_maint[0]= new paneau3D(eM1, "maintenance");
+                        paneau_maint[0]= new paneau3D(eM1, "maintenance",smallStep[0]);
                         paneau_maint[0].text="escalator en maintenance";
                         paneau_maint[0].image="/data/html/station_BDT/textures/maintenance.jpg"
                         paneau_maint[0].position = new BABYLON.Vector3(eM1.position.x+0.7,eM1.position.y-0.2,eM1.position.z);
@@ -970,13 +1007,16 @@ oaJsApi.dpConnect("BD1_1B1_EM2.status.MAINT",true,
                     {
                         paneau_maint[1].visibility=false;
                         smallStep[1].setStepMaterial(stairMaterial);
-                        paneau_maint[1]=null;                 
+                        paneau_maint[1].rect.visibility=false;
+                        paneau_maint[1].rect=null; 
+                        paneau_maint[1]=null;   
+             
                     }
                 if (maint[1]=='true')
                     {                     
                         smallStep[1].setStepMaterial(redStairMaterial);
                     // paneau maintenance EM2
-                        paneau_maint[1]= new paneau3D(eM2,"maintenance");
+                        paneau_maint[1]= new paneau3D(eM2,"maintenance",smallStep[1]);
                         paneau_maint[1].text="escalator en maintenance";
                         paneau_maint[1].image="/data/html/station_BDT/textures/maintenance.jpg"
                         paneau_maint[1].position = new BABYLON.Vector3(eM2.position.x+0.7,eM2.position.y-0.2,eM2.position.z);
@@ -1001,7 +1041,10 @@ oaJsApi.dpConnect("BD1_1B1_EM3.status.MAINT",true,
                     {
                         paneau_maint[2].visibility=false;
                         bigStep[0].setStepMaterial(stairMaterial);
+                        paneau_maint[2].rect.visibility=false;
+                        paneau_maint[2].rect=null;
                         paneau_maint[2]=null;
+
                         
                           
                     }
@@ -1009,7 +1052,7 @@ oaJsApi.dpConnect("BD1_1B1_EM3.status.MAINT",true,
                     {
                         bigStep[0].setStepMaterial(redStairMaterial);
                     // paneau hors service EM3
-                        paneau_maint[2]= new paneau3D(eM3,"maintenance");
+                        paneau_maint[2]= new paneau3D(eM3,"maintenance", bigStep[0]);
                         paneau_maint[2].text="escalator en maintenance";
                         paneau_maint[2].image="/data/html/station_BDT/textures/maintenance.jpg"
                         paneau_maint[2].position = new BABYLON.Vector3(eM3.position.x-1.5,eM3.position.y-.5,eM3.position.z);
@@ -1034,14 +1077,17 @@ oaJsApi.dpConnect("BD1_1B1_EM4.status.MAINT",true,
                     {
                         paneau_maint[3].visibility=false;
                         bigStep[1].setStepMaterial(stairMaterial);
+                        paneau_maint[3].rect.visibility=false;
+                        paneau_maint[3].rect=null;
                         paneau_maint[3]=null;
+
               
                     }
                 if (maint[3]=='true')
                     {                     
                         bigStep[1].setStepMaterial(redStairMaterial);
                                 // paneau maintenance EM4
-                        paneau_maint[3] = new paneau3D(eM4,"maintenance");
+                        paneau_maint[3] = new paneau3D(eM4,"maintenance",bigStep[1]);
                         paneau_maint[3].text="escalator en maintenance";
                         paneau_maint[3].image="/data/html/station_BDT/textures/maintenance.jpg"
                         paneau_maint[3].position = new BABYLON.Vector3(eM4.position.x-1.5,eM4.position.y-.5,eM4.position.z);
@@ -1072,14 +1118,21 @@ oaJsApi.dpConnect("BD1_1B1_EM1.status.MONTEE",true,
                 {
                     paneau_mt[0].visibility=false;
                     smallStep[0].setStepMaterial(stairMaterial);
+                    smallStep[0].duree=0;
+                    smallStep[0].seconds=0;
+                    smallStep[0].minutes=0;
+                    smallStep[0].heures=0;
+                    paneau_mt[0].rect.visibility=false;
+                    paneau_mt[0].rect=null;
                     paneau_mt[0]=null;
+
                 }
 
             else if(buffer[0]== 'true')
                 {
                         smallStep[0].setStepMaterial(greenStairMaterial);
                     // paneau monter EM1
-                        paneau_mt[0]= new paneau3D(eM1, "Monter");
+                        paneau_mt[0]= new paneau3D(eM1, "Monter", smallStep[0]);
                         paneau_mt[0].text="Monter";
                         paneau_mt[0].image="/data/html/station_BDT/textures/escalatorUp.gif"
                         paneau_mt[0].position = new BABYLON.Vector3(eM1.position.x+0.7,eM1.position.y-0.2,eM1.position.z);
@@ -1101,13 +1154,20 @@ oaJsApi.dpConnect("BD1_1B1_EM1.status.DESCENTE",true,
                 {
                     paneau_ds[0].visibility=false;
                     smallStep[0].setStepMaterial(stairMaterial);
+                    smallStep[0].duree=0;
+                    smallStep[0].seconds=0;
+                    smallStep[0].minutes=0;
+                    smallStep[0].heures=0;
+                    paneau_ds[0].rect.visibility=false;
+                    paneau_ds[0].rect=null;
                     paneau_ds[0]=null;
+
                 }
                 else if(buffer[1]== 'true')
                 {
                         smallStep[0].setStepMaterial(blueStairMaterial);
                 // paneau monter EM1
-                        paneau_ds[0]= new paneau3D(eM1, "Descendre");
+                        paneau_ds[0]= new paneau3D(eM1, "Descendre",smallStep[0]);
                         paneau_ds[0].text="Descendre";
                         paneau_ds[0].image="/data/html/station_BDT/textures/escalatorDown.png"
                         paneau_ds[0].position = new BABYLON.Vector3(eM1.position.x+0.7,eM1.position.y-0.2,eM1.position.z);
@@ -1128,14 +1188,21 @@ oaJsApi.dpConnect("BD1_1B1_EM2.status.MONTEE",true,
                 {
                     paneau_mt[1].visibility=false;
                     smallStep[1].setStepMaterial(stairMaterial);
+                    smallStep[1].duree=0;
+                    smallStep[1].seconds=0;
+                    smallStep[1].minutes=0;
+                    smallStep[1].heures=0;
+                    paneau_mt[1].rect.visibility=false;
+                    paneau_mt[1].rect=null;
                     paneau_mt[1]=null;
+
 
                 }
                 else if(buffer[2]== 'true')
                 {
                         smallStep[1].setStepMaterial(greenStairMaterial);
                     // paneau monter EM1
-                        paneau_mt[1]= new paneau3D(eM2, "Monter");
+                        paneau_mt[1]= new paneau3D(eM2, "Monter", smallStep[1]);
                         paneau_mt[1].text="Monter";
                         paneau_mt[1].image="/data/html/station_BDT/textures/escalatorUp.gif"
                         paneau_mt[1].position = new BABYLON.Vector3(eM2.position.x+0.7,eM2.position.y-0.2,eM2.position.z);
@@ -1155,13 +1222,20 @@ oaJsApi.dpConnect("BD1_1B1_EM2.status.DESCENTE",true,
                     {
                         paneau_ds[1].visibility=false;
                         smallStep[1].setStepMaterial(stairMaterial);
+                        smallStep[1].duree=0;
+                        smallStep[1].seconds=0;
+                        smallStep[1].minutes=0;
+                        smallStep[1].heures=0;
+                        paneau_ds[1].rect.visibility=false;
+                        paneau_ds[1].rect=null;
                         paneau_ds[1]=null;
+
                     }
                     else if(buffer[3]== 'true')
                     {
                         smallStep[1].setStepMaterial(blueStairMaterial);
                     // paneau monter EM1
-                        paneau_ds[1]= new paneau3D(eM2, "Descendre");
+                        paneau_ds[1]= new paneau3D(eM2, "Descendre",smallStep[1]);
                         paneau_ds[1].text="Descendre";
                         paneau_ds[1].image="/data/html/station_BDT/textures/escalatorDown.png"
                         paneau_ds[1].position = new BABYLON.Vector3(eM2.position.x+0.7,eM2.position.y-0.2,eM2.position.z);
@@ -1182,13 +1256,21 @@ oaJsApi.dpConnect("BD1_1B1_EM3.status.MONTEE",true,
                     {
                         paneau_mt[2].visibility=false;
                         bigStep[0].setStepMaterial(stairMaterial);
+                        bigStep[0].duree=0
+                        bigStep[0].seconds=0;
+                        bigStep[0].minutes=0;
+                        bigStep[0].heures=0;
+
+                        paneau_mt[2].rect.visibility=false;
+                        paneau_mt[2].rect=null;
                         paneau_mt[2]=null;
+
                     }
                     else if(buffer[4]== 'true')
                     {
                         bigStep[0].setStepMaterial(greenStairMaterial);
                         // paneau monter EM1
-                        paneau_mt[2]= new paneau3D(eM3, "Monter");
+                        paneau_mt[2]= new paneau3D(eM3, "Monter", bigStep[0]);
                         paneau_mt[2].text="Monter";
                         paneau_mt[2].image="/data/html/station_BDT/textures/escalatorUp.gif"
                         paneau_mt[2].position = new BABYLON.Vector3(eM3.position.x-1.5,eM3.position.y-.5,eM3.position.z);
@@ -1209,13 +1291,20 @@ oaJsApi.dpConnect("BD1_1B1_EM3.status.DESCENTE",true,
                     {
                         paneau_ds[2].visibility=false;
                         bigStep[0].setStepMaterial(stairMaterial);
+                        bigStep[0].duree=0
+                        bigStep[0].seconds=0;
+                        bigStep[0].minutes=0;
+                        bigStep[0].heures=0;
+                        paneau_mt[2].rect.visibility=false;
+                        paneau_mt[2].rect=null;
                         paneau_ds[2]=null;
+
                     }
                     else if(buffer[5]== 'true')
                     {
                         bigStep[0].setStepMaterial(blueStairMaterial);
                 // paneau monter EM1
-                        paneau_ds[2]= new paneau3D(eM3, "Descendre");
+                        paneau_ds[2]= new paneau3D(eM3, "Descendre", bigStep[0]);
                         paneau_ds[2].text="Descendre";
                         paneau_ds[2].image="/data/html/station_BDT/textures/escalatorDown.png"
                         paneau_ds[2].position = new BABYLON.Vector3(eM3.position.x-1.5,eM3.position.y-.5,eM3.position.z);
@@ -1235,14 +1324,21 @@ oaJsApi.dpConnect("BD1_1B1_EM4.status.MONTEE",true,
                         {
                             paneau_mt[3].visibility=false;
                             bigStep[1].setStepMaterial(stairMaterial);
+                            bigStep[1].duree=0
+                            bigStep[1].seconds=0;
+                            bigStep[1].minutes=0;
+                            bigStep[1].heures=0;
+                            paneau_mt[3].rect.visibility=false;
+                            paneau_mt[3].rect=null;
                             paneau_mt[3]=null;
+
 
                         }
                         else if(buffer[6]== 'true')
                         {
                             bigStep[1].setStepMaterial(greenStairMaterial);
                         // paneau monter EM1
-                            paneau_mt[3]= new paneau3D(eM4, "Monter");
+                            paneau_mt[3]= new paneau3D(eM4, "Monter", bigStep[1]);
                             paneau_mt[3].text="Monter";
                             paneau_mt[3].image="/data/html/station_BDT/textures/escalatorUp.gif"
                             paneau_mt[3].position = new BABYLON.Vector3(eM4.position.x-1.5,eM4.position.y-.5,eM4.position.z);
@@ -1263,13 +1359,20 @@ oaJsApi.dpConnect("BD1_1B1_EM4.status.DESCENTE",true,
                     {
                         paneau_ds[3].visibility=false;
                         bigStep[1].setStepMaterial(stairMaterial);
+                        bigStep[1].duree=0
+                        bigStep[1].seconds=0;
+                        bigStep[1].minutes=0;
+                        bigStep[1].heures=0;
+                        paneau_ds[3].rect.visibility=false;
+                        paneau_ds[3].rect=null;
                         paneau_ds[3]=null;
+
                     }
                     else if(buffer[7]== 'true')
                     {
                         bigStep[1].setStepMaterial(blueStairMaterial);
                     // paneau monter EM1
-                        paneau_ds[3]= new paneau3D(eM4, "Descendre");
+                        paneau_ds[3]= new paneau3D(eM4, "Descendre", bigStep[1]);
                         paneau_ds[3].text="Descendre";
                         paneau_ds[3].image="/data/html/station_BDT/textures/escalatorDown.png"
                         paneau_ds[3].position = new BABYLON.Vector3(eM4.position.x-1.5,eM4.position.y-.5,eM4.position.z);
@@ -1551,7 +1654,7 @@ var CreateScene=function()
     button8.buttonColor="green";
     panel3.panel.addControl(button8.button);
     //--------------------------------------------------------------------------------------------------------
-    var button13 = new button("Aucun",callbackButton);
+    var button13 = new button("Arret",callbackButton);
     button13.buttonColor="green";
     panel3.panel.addControl(button13.button);
 
@@ -1919,7 +2022,7 @@ var CreateScene=function()
                                                paneau_maint[3].visibility=false;
                                             } 
                                             break;
-                    case "Aucun" : if(buffer[0]=='false' && buffer[1]=='false' && hs[0]=='false' && maint[0]=='false')
+                    case "Arret" : if(buffer[0]=='false' && buffer[1]=='false' && hs[0]=='false' && maint[0]=='false')
                                             {
                                                 eM1.setEnabled(false);
                                                 smallStep[0].hideStep(false);
@@ -2050,7 +2153,7 @@ var CreateScene=function()
                                                paneau_maint[3].visibility=true; 
                                             } 
                                             break;
-                        case "Aucun" : if(buffer[0]=='false' && buffer[1]=='false' && hs[0]=='false' && maint[0]=='false')
+                        case "Arret" : if(buffer[0]=='false' && buffer[1]=='false' && hs[0]=='false' && maint[0]=='false')
                                             {
                                                 eM1.setEnabled(true);
                                                 smallStep[0].hideStep(true);
@@ -2291,6 +2394,25 @@ engine.runRenderLoop(function()
                 */
 
     	scene.render();
+        if(buffer[0]== 'true' && !paneau_mt[0].toggle)
+            paneau_mt[0].rect.text("EM1","Monter", smallStep[0]);
+        if(buffer[2]== 'true' && !paneau_mt[1].toggle)
+            paneau_mt[1].rect.text("EM2","Monter", smallStep[1]);
+        if(buffer[4]== 'true' && !paneau_mt[2].toggle)
+            paneau_mt[2].rect.text("EM3","Monter", bigStep[0]);
+        if(buffer[6]== 'true' && !paneau_mt[3].toggle)
+            paneau_mt[3].rect.text("EM4","Monter", bigStep[1]);
+
+        if(buffer[1]== 'true' && !paneau_ds[0].toggle)
+            paneau_ds[0].rect.text("EM1","Descendre", smallStep[0]);
+            //paneau_mt[0]._stairRect;
+        if(buffer[3]== 'true' && !paneau_ds[1].toggle)
+            paneau_ds[1].rect.text("EM2","Descendre", smallStep[1]);
+        if(buffer[5]== 'true' && !paneau_ds[2].toggle)
+            paneau_ds[2].rect.text("EM3","Descendre", bigStep[0]);
+        if(buffer[7]== 'true' && !paneau_ds[3].toggle)
+            paneau_ds[3].rect.text("EM4","Descendre", bigStep[1]);
+
 
 	});
 
