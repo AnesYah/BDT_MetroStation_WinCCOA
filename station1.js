@@ -418,7 +418,6 @@ oaJsApi.dpConnect("EM.EM1:_original.._value",true,
                        				{
                            				niv2Set.forEach(mesh=>
 			                                {
-			                                    //hide(mesh,1,0.2);
                                                 mesh.setEnabled(false);
 			                                })
                            				compteur=true;
@@ -503,12 +502,10 @@ oaJsApi.dpConnect("EM.EM3:_original.._value",true,
 	                            {
 	                               niv2Set.forEach(mesh=>
 	                                {
-	                                    //hide(mesh,1,0);
                                         mesh.setEnabled(false);
 	                                })
 	                                niv3Set.forEach(mesh=>
 	                                {
-	                                    //hide(mesh,1,0);
                                         mesh.setEnabled(false);
 	                                })
 	                                compteur=true;
@@ -517,7 +514,6 @@ oaJsApi.dpConnect("EM.EM3:_original.._value",true,
 	                            {
 	                                niv3Set.forEach(mesh=>
 	                                {
-	                                    //hide(mesh,1,0);
                                         mesh.setEnabled(false);
 	                                })
 	                       		}
@@ -601,7 +597,7 @@ oaJsApi.dpConnect("BD1_1B1_EM1.status.ARRET_URGENCE",true,
 				alarm[0]=data.value;
 				if(alarm[0]=='false')
 					{
-						    let redButtonGoal=new BABYLON.Vector3(redButton[0].position.x,redButton[0].position.y,redButton[0].position.z+0.003);
+						    let redButtonGoal=new BABYLON.Vector3(redButton[0].position.x,redButton[0].position.y,redButton[0].position.z-1);
 							UseCamera1();
 							let MyRedButtonPath=new MyPath(redButtonGoal, redButton[0].position);
 							MoveButton(scene,redButton[0],MyRedButtonPath,false);
@@ -617,7 +613,7 @@ oaJsApi.dpConnect("BD1_1B1_EM1.status.ARRET_URGENCE",true,
 			                       {
 			                           niv2Set.forEach(mesh=>
 			                                {
-			                                    hide(mesh,1,0.2);
+                                                mesh.setEnabled(false);
 			                                })
 			                           compteur=true;
 			                        }
@@ -625,15 +621,15 @@ oaJsApi.dpConnect("BD1_1B1_EM1.status.ARRET_URGENCE",true,
 			            let target=new BABYLON.Vector3(arretUrgence1.position.x,arretUrgence1.position.y,arretUrgence1.position.z); // définir le target (EM1 position)
 
                         camera1.setTarget (target); //EM1 position
-                        let toArretUrgence1x = arretUrgence1.position.x+alarmOffset*Math.cos(-arretUrgence1.rotation.y+Math.PI/4)*Math.cos(-arretUrgence1.rotation.x);
+                        let toArretUrgence1x = arretUrgence1.position.x+alarmOffset*Math.cos(-arretUrgence1.rotation.y-Math.PI/4)*Math.cos(-arretUrgence1.rotation.x);
                         let toArretUrgence1y = arretUrgence1.position.y+alarmOffset*Math.sin(-arretUrgence1.rotation.x);
-                        let toArretUrgence1z = arretUrgence1.position.z+alarmOffset*Math.sin(-arretUrgence1.rotation.y+Math.PI/4.)*Math.cos(-arretUrgence1.rotation.x);
+                        let toArretUrgence1z = arretUrgence1.position.z+alarmOffset*Math.sin(-arretUrgence1.rotation.y-Math.PI/4.)*Math.cos(-arretUrgence1.rotation.x);
                         let ToArretUrgence1 = new BABYLON.Vector3(toArretUrgence1x,toArretUrgence1y,toArretUrgence1z); // to see EM1 
                         let MyCurve= MyPath(camera1.position,ToArretUrgence1);
                         MoveCameraThrough(scene, camera1, MyCurve);
 
 
-                        let redButtonGoal=new BABYLON.Vector3(redButton[0].position.x,redButton[0].position.y,redButton[0].position.z+0.003);
+                        let redButtonGoal=new BABYLON.Vector3(redButton[0].position.x,redButton[0].position.y,redButton[0].position.z-1);
 			            let MyRedButtonPath=new MyPath(redButton[0].position,redButtonGoal);
 			            MoveButton(scene,redButton[0],MyRedButtonPath,true);
 			            redButtonMesh[0].blink(500,RedBox,RedBisBox);
@@ -667,7 +663,7 @@ oaJsApi.dpConnect("BD1_1B1_EM2.status.ARRET_URGENCE",true,
 	                       {
 	                           niv2Set.forEach(mesh=>
 	                                {
-	                                    hide(mesh,1,0.2);
+	                                    mesh.setEnabled(false);
 	                                })
 	                           compteur=true;
 	                        }
@@ -716,11 +712,11 @@ oaJsApi.dpConnect("BD1_1B1_EM3.status.ARRET_URGENCE",true,
                             {
                                niv2Set.forEach(mesh=>
                                 {
-                                    hide(mesh,1,0.1);
+                                    mesh.setEnabled(false);
                                 })
                                 niv3Set.forEach(mesh=>
                                 {
-                                    hide(mesh,1,0.1);
+                                    mesh.setEnabled(false);
                                 })
                                 compteur=true;
                             }
@@ -728,7 +724,7 @@ oaJsApi.dpConnect("BD1_1B1_EM3.status.ARRET_URGENCE",true,
                             {
                                 niv3Set.forEach(mesh=>
                                 {
-                                    hide(mesh,1,0.1);
+                                    mesh.setEnabled(false);
                                 })
                             } 
 			            let target=new BABYLON.Vector3(arretUrgence3.position.x,arretUrgence3.position.y,arretUrgence3.position.z); // définir le target (EM1 position)
@@ -759,7 +755,7 @@ oaJsApi.dpConnect("BD1_1B1_EM4.status.ARRET_URGENCE",true,
 				alarm[3]=data.value;
 				if(alarm[3]=='false')
 					{
-                        	let redButtonGoal=new BABYLON.Vector3(redButton[3].position.x,redButton[3].position.y,redButton[3].position.z+0.003);
+                        	let redButtonGoal=new BABYLON.Vector3(redButton[3].position.x,redButton[3].position.y,redButton[3].position.z-1);
 							UseCamera1();
 							let MyRedButtonPath=new MyPath(redButtonGoal, redButton[3].position);
 							MoveButton(scene,redButton[3],MyRedButtonPath,false);
@@ -775,11 +771,11 @@ oaJsApi.dpConnect("BD1_1B1_EM4.status.ARRET_URGENCE",true,
                             {
                                niv2Set.forEach(mesh=>
                                 {
-                                    hide(mesh,1,0.1);
+                                    mesh.setEnabled(false);
                                 })
                                 niv3Set.forEach(mesh=>
                                 {
-                                    hide(mesh,1,0.1);
+                                    mesh.setEnabled(false);
                                 })
                                 compteur=true;
                             }
@@ -787,21 +783,21 @@ oaJsApi.dpConnect("BD1_1B1_EM4.status.ARRET_URGENCE",true,
                             {
                                 niv3Set.forEach(mesh=>
                                 {
-                                    hide(mesh,1,0.1);
+                                    mesh.setEnabled(false);
                                 })
                             } 
 
                         let target=new BABYLON.Vector3(arretUrgence4.position.x,arretUrgence4.position.y,arretUrgence4.position.z); // définir le target (EM1 position)
 			            camera1.setTarget (target); //EM1 position
-                        let toArretUrgence4x = arretUrgence4.position.x+alarmOffset*Math.cos(-arretUrgence4.rotation.y+Math.PI/4)*Math.cos(-arretUrgence4.rotation.x);
+                        let toArretUrgence4x = arretUrgence4.position.x+alarmOffset*Math.cos(-arretUrgence4.rotation.y-Math.PI/4)*Math.cos(-arretUrgence4.rotation.x);
                         let toArretUrgence4y = arretUrgence4.position.y+alarmOffset*Math.sin(-arretUrgence4.rotation.x);
-                        let toArretUrgence4z = arretUrgence4.position.z+alarmOffset*Math.sin(-arretUrgence4.rotation.y+Math.PI/4.)*Math.cos(-arretUrgence4.rotation.x);
+                        let toArretUrgence4z = arretUrgence4.position.z+alarmOffset*Math.sin(-arretUrgence4.rotation.y-Math.PI/4.)*Math.cos(-arretUrgence4.rotation.x);
                         let ToArretUrgence4 = new BABYLON.Vector3(toArretUrgence4x,toArretUrgence4y,toArretUrgence4z); // to see EM1 
                         let MyCurve= MyPath(camera1.position,ToArretUrgence4);
                         MoveCameraThrough(scene, camera1, MyCurve);
 
 
-                        let redButtonGoal=new BABYLON.Vector3(redButton[3].position.x,redButton[3].position.y,redButton[3].position.z+0.003);
+                        let redButtonGoal=new BABYLON.Vector3(redButton[3].position.x,redButton[3].position.y,redButton[3].position.z-1);
 			            let MyRedButtonPath=new MyPath(redButton[3].position,redButtonGoal);
 			            MoveButton(scene,redButton[3],MyRedButtonPath,true);
 			            redButtonMesh[3].blink(500,RedBox,RedBisBox);
@@ -1422,12 +1418,10 @@ var UseCamera1=function()
                 MoveCameraThrough(scene, camera1, MyCurve);
 	             niv2Set.forEach(mesh=>
 	                {
-	                    //show(mesh,1,0);
                         mesh.setEnabled(true);
 	                })
 	            niv3Set.forEach(mesh=>
 	                {
-	                    //show(mesh,1,0);
                         mesh.setEnabled(true);
 
 	                }) 
@@ -1700,6 +1694,10 @@ var CreateScene=function()
                     eM2.setEnabled(false);
                     eM3.setEnabled(false); 
                     eM4.setEnabled(false);
+                    arretUrgence1.setEnabled(false);
+                    arretUrgence2.setEnabled(false);
+                    arretUrgence3.setEnabled(false);
+                    arretUrgence4.setEnabled(false);
                     smallStep[0].hideStep(false);
                     smallStep[1].hideStep(false);
                     bigStep[0].hideStep(false);
@@ -1748,6 +1746,10 @@ var CreateScene=function()
                     eM2.setEnabled(true);
                     eM3.setEnabled(true); 
                     eM4.setEnabled(true);
+                    arretUrgence1.setEnabled(true);
+                    arretUrgence2.setEnabled(true);
+                    arretUrgence3.setEnabled(true);
+                    arretUrgence4.setEnabled(true);
                     smallStep[0].hideStep(true);
                     smallStep[1].hideStep(true);
                     bigStep[0].hideStep(true);
@@ -1804,6 +1806,10 @@ var CreateScene=function()
                     eM2.setEnabled(true);
                     eM3.setEnabled(true); 
                     eM4.setEnabled(true);
+                    arretUrgence1.setEnabled(true);
+                    arretUrgence2.setEnabled(true);
+                    arretUrgence3.setEnabled(true);
+                    arretUrgence4.setEnabled(true);
                     smallStep[0].hideStep(true);
                     smallStep[1].hideStep(true);
                     bigStep[0].hideStep(true);
@@ -1852,6 +1858,10 @@ var CreateScene=function()
                     eM2.setEnabled(false);
                     eM3.setEnabled(false); 
                     eM4.setEnabled(false);
+                    arretUrgence1.setEnabled(false);
+                    arretUrgence2.setEnabled(false);
+                    arretUrgence3.setEnabled(false);
+                    arretUrgence4.setEnabled(false);
                     smallStep[0].hideStep(false);
                     smallStep[1].hideStep(false);
                     bigStep[0].hideStep(false);
@@ -1922,6 +1932,7 @@ var CreateScene=function()
                         case "Monter" : if(buffer[0]=='true')
                                             {
                                                 eM1.setEnabled(false);
+                                                arretUrgence1.setEnabled(false);
                                                 smallStep[0].hideStep(false);
                                                 paneau_mt[0].visibility=false;
 
@@ -1929,18 +1940,21 @@ var CreateScene=function()
                                         if (buffer[2]=='true')
                                             {
                                                eM2.setEnabled(false);
+                                               arretUrgence2.setEnabled(false);
                                                smallStep[1].hideStep(false);
                                                paneau_mt[1].visibility=false;
                                             }
                                         if (buffer[4]=='true')
                                             {
                                                eM3.setEnabled(false);
+                                               arretUrgence3.setEnabled(false);
                                                bigStep[0].hideStep(false); 
                                                paneau_mt[2].visibility=false;
                                             }
                                         if (buffer[6]=='true')
                                             {
                                                eM4.setEnabled(false);
+                                               arretUrgence4.setEnabled(false);
                                                bigStep[1].hideStep(false); 
                                                paneau_mt[3].visibility=false;
                                             }
@@ -1948,24 +1962,28 @@ var CreateScene=function()
                         case "Descendre" : if(buffer[1]=='true')
                                             {
                                                 eM1.setEnabled(false);
+                                                arretUrgence1.setEnabled(false);
                                                 smallStep[0].hideStep(false);
                                                 paneau_ds[0].visibility=false;
                                             }
                                         if (buffer[3]=='true')
                                             {
                                                eM2.setEnabled(false);
+                                               arretUrgence2.setEnabled(false);
                                                smallStep[1].hideStep(false); 
                                                paneau_ds[1].visibility=false;
                                             }
                                         if (buffer[5]=='true')
                                             {
                                                eM3.setEnabled(false);
+                                               arretUrgence3.setEnabled(false);
                                                bigStep[0].hideStep(false); 
                                                paneau_ds[2].visibility=false;
                                             }
                                         if (buffer[7]=='true')
                                             {
                                                eM4.setEnabled(false);
+                                               arretUrgence4.setEnabled(false);
                                                bigStep[1].hideStep(false); 
                                                paneau_ds[3].visibility=false;
                                             } 
@@ -1973,12 +1991,14 @@ var CreateScene=function()
                         case "Hors-Service" : if(hs[0]=='true')
                                             {
                                                 eM1.setEnabled(false);
+                                                arretUrgence1.setEnabled(false);
                                                 smallStep[0].hideStep(false);
                                                 paneau_hs[0].visibility=false;
                                             }
                                         if (hs[1]=='true')
                                             {
                                                eM2.setEnabled(false);
+                                               arretUrgence2.setEnabled(false);
                                                smallStep[1].hideStep(false); 
                                                paneau_hs[1].visibility=false;
 
@@ -1986,12 +2006,14 @@ var CreateScene=function()
                                         if (hs[2]=='true')
                                             {
                                                eM3.setEnabled(false);
+                                               arretUrgence3.setEnabled(false);
                                                bigStep[0].hideStep(false);
                                                paneau_hs[2].visibility=false;
                                             }
                                         if (hs[3]=='true')
                                             {
                                                eM4.setEnabled(false);
+                                               arretUrgence4.setEnabled(false);
                                                bigStep[1].hideStep(false);
                                                paneau_hs[3].visibility=false; 
                                             } 
@@ -2000,24 +2022,28 @@ var CreateScene=function()
                         case "Maintenance" : if(maint[0]=='true')
                                             {
                                                 eM1.setEnabled(false);
+                                                arretUrgence1.setEnabled(false);
                                                 smallStep[0].hideStep(false);
                                                 paneau_maint[0].visibility=false;
                                             }
                                         if (maint[1]=='true')
                                             {
                                                eM2.setEnabled(false);
+                                               arretUrgence2.setEnabled(false);
                                                smallStep[1].hideStep(false); 
                                                paneau_maint[1].visibility=false;
                                             }
                                         if (maint[2]=='true')
                                             {
                                                eM3.setEnabled(false);
+                                               arretUrgence3.setEnabled(false);
                                                bigStep[0].hideStep(false);
                                                paneau_maint[2].visibility=false;
                                             }
                                         if (maint[3]=='true')
                                             {
                                                eM4.setEnabled(false);
+                                               arretUrgence4.setEnabled(false);
                                                bigStep[1].hideStep(false); 
                                                paneau_maint[3].visibility=false;
                                             } 
@@ -2025,21 +2051,25 @@ var CreateScene=function()
                     case "Arret" : if(buffer[0]=='false' && buffer[1]=='false' && hs[0]=='false' && maint[0]=='false')
                                             {
                                                 eM1.setEnabled(false);
+                                                arretUrgence1.setEnabled(false);
                                                 smallStep[0].hideStep(false);
                                             }
                                         if (buffer[2]=='false' &&  buffer[3]=='false' && hs[1]=='false' && maint[1]=='false')
                                             {
                                                eM2.setEnabled(false);
+                                               arretUrgence2.setEnabled(false);
                                                smallStep[1].hideStep(false);
                                             }
                                         if (buffer[4]=='false' &&  buffer[5]=='false' && hs[2]=='false' && maint[2]=='false')
                                             {
                                                eM3.setEnabled(false);
+                                               arretUrgence3.setEnabled(false);
                                                bigStep[0].hideStep(false); 
                                             }
                                         if (buffer[6]=='false' &&  buffer[7]=='false' && hs[3]=='false' && maint[3]=='false')
                                             {
                                                eM4.setEnabled(false);
+                                               arretUrgence4.setEnabled(false);
                                                bigStep[1].hideStep(false); 
                                             }
                                             break;
@@ -2053,12 +2083,14 @@ var CreateScene=function()
                         case "Monter" : if(buffer[0]=='true')
                                             {
                                                 eM1.setEnabled(true);
+                                                arretUrgence1.setEnabled(true);
                                                 smallStep[0].hideStep(true);
                                                 paneau_mt[0].visibility=true;
                                             }
                                         if (buffer[2]=='true')
                                             {
                                                eM2.setEnabled(true);
+                                               arretUrgence2.setEnabled(true);
                                                smallStep[1].hideStep(true);
                                                paneau_mt[1].visibility=true;
 
@@ -2066,12 +2098,14 @@ var CreateScene=function()
                                         if (buffer[4]=='true')
                                             {
                                                eM3.setEnabled(true);
+                                               arretUrgence3.setEnabled(true);
                                                bigStep[0].hideStep(true); 
                                                paneau_mt[2].visibility=true;
                                             }
                                         if (buffer[6]=='true')
                                             {
                                                eM4.setEnabled(true);
+                                               arretUrgence4.setEnabled(true);
                                                bigStep[1].hideStep(true); 
                                                paneau_mt[3].visibility=true;
                                             }
@@ -2079,24 +2113,28 @@ var CreateScene=function()
                         case "Descendre" : if(buffer[1]=='true')
                                             {
                                                 eM1.setEnabled(true);
+                                                arretUrgence1.setEnabled(true);
                                                 smallStep[0].hideStep(true);
                                                 paneau_ds[0].visibility=true;
                                             }
                                         if (buffer[3]=='true')
                                             {
                                                eM2.setEnabled(true);
+                                               arretUrgence2.setEnabled(true);
                                                smallStep[1].hideStep(true); 
                                                paneau_ds[1].visibility=true;
                                             }
                                         if (buffer[5]=='true')
                                             {
                                                eM3.setEnabled(true);
+                                               arretUrgence3.setEnabled(true);
                                                bigStep[0].hideStep(true); 
                                                paneau_ds[2].visibility=true;
                                             }
                                         if (buffer[7]=='true')
                                             {
                                                eM4.setEnabled(true);
+                                               arretUrgence4.setEnabled(true);
                                                bigStep[1].hideStep(true); 
                                                paneau_ds[3].visibility=true;
                                             } 
@@ -2104,12 +2142,14 @@ var CreateScene=function()
                         case "Hors-Service" : if(hs[0]=='true')
                                             {
                                                 eM1.setEnabled(true);
+                                                arretUrgence1.setEnabled(true);
                                                 smallStep[0].hideStep(true);
                                                 paneau_hs[0].visibility=true;
                                             }
                                         if (hs[1]=='true')
                                             {
                                                eM2.setEnabled(true);
+                                               arretUrgence2.setEnabled(true);
                                                smallStep[1].hideStep(true);
                                                paneau_hs[1].visibility=true;
 
@@ -2117,12 +2157,14 @@ var CreateScene=function()
                                         if (hs[2]=='true')
                                             {
                                                eM3.setEnabled(true);
+                                               arretUrgence3.setEnabled(true);
                                                bigStep[0].hideStep(true);
                                                paneau_hs[2].visibility=true;
                                             }
                                         if (hs[3]=='true')
                                             {
                                                eM4.setEnabled(true);
+                                               arretUrgence4.setEnabled(true);
                                                bigStep[1].hideStep(true);
                                                paneau_hs[3].visibility=true; 
                                             } 
@@ -2131,24 +2173,28 @@ var CreateScene=function()
                         case "Maintenance" : if(maint[0]=='true')
                                             {
                                                 eM1.setEnabled(true);
+                                                arretUrgence1.setEnabled(true);
                                                 smallStep[0].hideStep(true);
                                                 paneau_maint[0].visibility=true;
                                             }
                                         if (maint[1]=='true')
                                             {
                                                eM2.setEnabled(true);
+                                               arretUrgence2.setEnabled(true);
                                                smallStep[1].hideStep(true);
                                                paneau_maint[1].visibility=true; 
                                             }
                                         if (maint[2]=='true')
                                             {
                                                eM3.setEnabled(true);
+                                               arretUrgence3.setEnabled(true);
                                                bigStep[0].hideStep(true);
                                                paneau_maint[2].visibility=true;
                                             }
                                         if (maint[3]=='true')
                                             {
                                                eM4.setEnabled(true);
+                                               arretUrgence4.setEnabled(true);
                                                bigStep[1].hideStep(true);
                                                paneau_maint[3].visibility=true; 
                                             } 
@@ -2156,21 +2202,25 @@ var CreateScene=function()
                         case "Arret" : if(buffer[0]=='false' && buffer[1]=='false' && hs[0]=='false' && maint[0]=='false')
                                             {
                                                 eM1.setEnabled(true);
+                                                arretUrgence1.setEnabled(true);
                                                 smallStep[0].hideStep(true);
                                             }
                                         if (buffer[2]=='false' &&  buffer[3]=='false' && hs[1]=='false' && maint[1]=='false')
                                             {
                                                eM2.setEnabled(true);
+                                               arretUrgence2.setEnabled(true);
                                                smallStep[1].hideStep(true);
                                             }
                                         if (buffer[4]=='false' &&  buffer[5]=='false' && hs[2]=='false' && maint[2]=='false')
                                             {
                                                eM3.setEnabled(true);
+                                               arretUrgence3.setEnabled(true);
                                                bigStep[0].hideStep(true); 
                                             }
                                         if (buffer[6]=='false' &&  buffer[7]=='false' && hs[3]=='false' && maint[3]=='false')
                                             {
                                                eM4.setEnabled(true);
+                                               arretUrgence4.setEnabled(true);
                                                bigStep[1].hideStep(true); 
                                             }
                                             break;
